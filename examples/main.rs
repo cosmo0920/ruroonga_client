@@ -5,6 +5,30 @@ use json_flex::Unwrap;
 
 use ruroonga_client as groonga;
 
+fn create_table() {
+    let mut request = groonga::HTTPRequest::new();
+    let mut command = groonga::CommandQuery::new("table_create");
+    command.set_argument(vec![("name", "Sites"),
+                              ("flags","TABLE_HASH_KEY"),("key_type","ShortText")]);
+    let url = format!("http://localhost:10041{}", command.encode());
+    println!("load url: {}", url);
+    let res = request.load(url);
+    let result = request.receive(&mut res.unwrap());
+    println!("result: {}", result);
+}
+
+fn create_column() {
+    let mut request = groonga::HTTPRequest::new();
+    let mut command = groonga::CommandQuery::new("column_create");
+    command.set_argument(vec![("table", "Sites"),
+                              ("name","title"),("type","ShortText")]);
+    let url = format!("http://localhost:10041{}", command.encode());
+    println!("load url: {}", url);
+    let res = request.load(url);
+    let result = request.receive(&mut res.unwrap());
+    println!("result: {}", result);
+}
+
 fn load() {
     let data = r#"
 [
@@ -30,10 +54,12 @@ fn load() {
 }
 
 fn main() {
+    create_table();
+    create_column();
     load();
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("select");
-    command.set_argument(vec![("table", "Site")]);
+    command.set_argument(vec![("table", "Sites")]);
     let url = format!("http://localhost:10041{}", command.encode());
     println!("url: {}", url);
     let res = request.get(url);
@@ -55,6 +81,7 @@ fn main() {
             } else if vv.is_string() {
                 println!("{:?}", vv.unwrap_string())
             } else {
+                println!("-- schema column --");
                 println!("{:?}", vv)
             }
         }
