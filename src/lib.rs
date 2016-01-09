@@ -6,7 +6,6 @@ use std::io::Read;
 
 use hyper::Client;
 use hyper::header::Connection;
-use hyper::header::ContentType;
 use url::form_urlencoded;
 use json_flex::{JFObject, Unwrap};
 
@@ -30,13 +29,12 @@ impl HTTPRequest {
         res
     }
 
-    pub fn load(&mut self, url_base: String, body: &str)
+    // TODO: Support load via POST
+    pub fn load(&mut self, url: String)
                    -> Result<hyper::client::response::Response, hyper::error::Error> {
         // Creating an loading data request via POST.
-        let url = url_base + "/d/load";
-        let res = self.client.post(&*url)
-            .header(ContentType::json())
-            .body(body)
+        let res = self.client.get(&*url)
+            .header(Connection::close())
             .send();
         res
     }

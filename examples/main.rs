@@ -5,10 +5,35 @@ use json_flex::Unwrap;
 
 use ruroonga_client as groonga;
 
+fn load() {
+    let data = r#"
+[
+{"_key":"http://example.org/","title":"This is test record 1!"},
+{"_key":"http://example.net/","title":"test record 2."},
+{"_key":"http://example.com/","title":"test test record three."},
+{"_key":"http://example.net/afr","title":"test record four."},
+{"_key":"http://example.org/aba","title":"test test test record five."},
+{"_key":"http://example.com/rab","title":"test test test test record six."},
+{"_key":"http://example.net/atv","title":"test test test record seven."},
+{"_key":"http://example.org/gat","title":"test test record eight."},
+{"_key":"http://example.com/vdw","title":"test test record nine."},
+]"#;
+    let mut request = groonga::HTTPRequest::new();
+    let mut load_command = groonga::CommandQuery::new("load");
+    load_command.set_argument(vec![("table", "Sites"),
+                                   ("input_type","json"), ("values", data)]);
+    let load_url = format!("http://localhost:10041{}", load_command.encode());
+    println!("load url: {}", load_url);
+    let load_res = request.load(load_url);
+    let load_result = request.receive(&mut load_res.unwrap());
+    println!("result: {}", load_result);
+}
+
 fn main() {
+    load();
+    let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("select");
     command.set_argument(vec![("table", "Site")]);
-    let mut request = groonga::HTTPRequest::new();
     let url = format!("http://localhost:10041{}", command.encode());
     println!("url: {}", url);
     let res = request.get(url);
