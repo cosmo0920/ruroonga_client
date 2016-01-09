@@ -19,6 +19,8 @@ fn main() {
     println!("start: {:?}", decode.start_time().unwrap());
     println!("elapsed: {:?}", decode.elapsed_time().unwrap());
     println!("matched columns: {:?}", decode.matched_columns().unwrap());
+    let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
+    println!("index access: {:?}", vec[2]);
     // Read got response
     for v in decode.result().unwrap().pop().unwrap().unwrap_vec().iter() {
         println!("{:?}", v);

@@ -181,6 +181,8 @@ mod result_parser_test {
         assert_eq!(&1452348610.39281, decode.start_time().unwrap());
         assert_eq!(&0.000101566314697266, decode.elapsed_time().unwrap());
         assert_eq!(9, decode.matched_columns().unwrap());
-        // TODO: assert responed data
+        let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
+        let expected = r#"Array([Integer(1), String("http://example.org/"), String("This is test record 1!")])"#.to_owned();
+        assert_eq!(expected, format!("{:?}", vec[2]))
     }
 }
