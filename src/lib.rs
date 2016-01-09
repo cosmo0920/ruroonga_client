@@ -81,6 +81,28 @@ impl<'a> CommandQuery<'a> {
     }
 }
 
+#[cfg(test)]
+mod command_query_test {
+    use super::*;
+
+    #[test]
+    fn construct_query() {
+        let mut command = CommandQuery::new("select");
+        command.set_argument(vec![("table", "Site")]);
+        let url_encoded = "/d/select?table=Site";
+        assert_eq!(url_encoded, command.encode());
+    }
+
+    #[test]
+    fn construct_complex_query() {
+        let mut command = CommandQuery::new("select");
+        command.set_argument(vec![("table", "Site"),
+                                  ("--query","\'_key:\"http://example.org/\"\'")]);
+        let url_encoded = "/d/select?table=Site&--query=%27_key%3A%22http%3A%2F%2Fexample.org%2F%22%27";
+        assert_eq!(url_encoded, command.encode());
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct ResultParser {
     result: Box<JFObject>
@@ -133,5 +155,32 @@ impl ResultParser {
             Some(_) => Some(vec![self.result[0][3].clone()]),
             None    => None
         }
+    }
+}
+
+#[cfg(test)]
+mod result_parser_test {
+    use super::*;
+
+    #[test]
+    fn parse_result() {
+        let response = "
+    [[0,1452348610.39281,0.000101566314697266],
+    [[[9],[[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],
+    [1,\"http://example.org/\",\"This is test record 1!\"],
+    [2,\"http://example.net/\",\"test record 2.\"],
+    [3,\"http://example.com/\",\"test test record three.\"],
+    [4,\"http://example.net/afr\",\"test record four.\"],
+    [5,\"http://example.org/aba\",\"test test test record five.\"],
+    [6,\"http://example.com/rab\",\"test test test test record six.\"],
+    [7,\"http://example.net/atv\",\"test test test record seven.\"],
+    [8,\"http://example.org/gat\",\"test test record eight.\"],
+    [9,\"http://example.com/vdw\",\"test test record nine.\"]]]]";
+        let mut decode = ResultParser::new(response.to_string());
+        assert_eq!(&0, decode.status().unwrap());
+        assert_eq!(&1452348610.39281, decode.start_time().unwrap());
+        assert_eq!(&0.000101566314697266, decode.elapsed_time().unwrap());
+        assert_eq!(9, decode.matched_columns().unwrap());
+        // TODO: assert responed data
     }
 }
