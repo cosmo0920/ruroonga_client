@@ -144,7 +144,7 @@ impl ResultParser {
     pub fn matched_columns(&mut self) -> Option<i64> {
         match self.status() {
             Some(&0) => Some(self.matched_columns_num()),
-            Some(_) => Some(-1),
+            Some(_) => None,
             None    => None
         }
     }
