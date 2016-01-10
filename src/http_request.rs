@@ -1,3 +1,4 @@
+use std::io;
 use std::io::Read;
 use hyper::Client;
 use hyper::client::response::Response;
@@ -34,11 +35,12 @@ impl HTTPRequest {
         res
     }
 
-    pub fn receive(&mut self, res: &mut Response) -> String {
+    pub fn receive(&mut self, res: &mut Response)
+                   -> Result<String, io::Error> {
         // Read the Response.
         let mut body = String::new();
-        res.read_to_string(&mut body).unwrap();
+        try!(res.read_to_string(&mut body));
 
-        body
+        Ok(body)
     }
 }

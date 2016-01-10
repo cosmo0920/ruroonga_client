@@ -15,7 +15,7 @@ fn create_table() {
     let url = format!("http://{}{}", GROONGA_SERVER, command.encode());
     println!("load url: {}", url);
     let res = request.get(url);
-    let result = request.receive(&mut res.unwrap());
+    let result = request.receive(&mut res.unwrap()).unwrap();
     println!("result: {}", result);
 }
 
@@ -27,7 +27,7 @@ fn create_column() {
     let url = format!("http://{}{}", GROONGA_SERVER, command.encode());
     println!("load url: {}", url);
     let res = request.get(url);
-    let result = request.receive(&mut res.unwrap());
+    let result = request.receive(&mut res.unwrap()).unwrap();
     println!("result: {}", result);
 }
 
@@ -51,7 +51,7 @@ fn load() {
     println!("load url: {}", load_url);
     println!("load data: {}", data);
     let load_res = request.load(load_url, data.to_string());
-    let load_result = request.receive(&mut load_res.unwrap());
+    let load_result = request.receive(&mut load_res.unwrap()).unwrap();
     println!("result: {}", load_result);
 }
 
@@ -72,7 +72,7 @@ fn main() {
     let url = format!("http://{}{}", GROONGA_SERVER, command.encode());
     println!("url: {}", url);
     let res = request.get(url);
-    let result = request.receive(&mut res.unwrap());
+    let result = request.receive(&mut res.unwrap()).unwrap();
     println!("result: {}", result);
     let mut decode = groonga::ResultParser::new(result);
     println!("status: {:?}", decode.status().unwrap());
