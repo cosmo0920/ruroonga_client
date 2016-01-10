@@ -50,7 +50,7 @@ fn load() {
     let load_url = format!("http://{}{}", GROONGA_SERVER, load_command.encode());
     println!("load url: {}", load_url);
     println!("load data: {}", data);
-    let load_res = request.load(load_url, data);
+    let load_res = request.load(load_url, data.to_string());
     let load_result = request.receive(&mut load_res.unwrap());
     println!("result: {}", load_result);
 }

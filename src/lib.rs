@@ -31,12 +31,12 @@ impl HTTPRequest {
         res
     }
 
-    pub fn load(&mut self, url: String, body: &str)
+    pub fn load(&mut self, url: String, body: String)
                    -> Result<Response, HyperError> {
         // Creating an loading data request via POST.
         let res = self.client.post(&*url)
             .header(ContentType::json())
-            .body(body)
+            .body(&*body)
             .send();
         res
     }
