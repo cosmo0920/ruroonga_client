@@ -7,8 +7,10 @@ A tiny Groonga client written by Rust language.
 
 Add this to your Cargo.toml:
 
+```
 [dependencies]
 ruroonga_client = "*"
+```
 
 and this to your crate root:
 
