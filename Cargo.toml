@@ -1,7 +1,12 @@
 [package]
 name = "ruroonga_client"
 version = "0.1.0"
+description = "A tiny Groonga HTTP client."
 authors = ["Hiroshi Hatake <cosmo0920.wp@gmail.com>"]
+keywords = ["groonga"]
+license-file = "LICENSE"
+readme = "README.md"
+homepage = "https://github.com/cosmo0920/ruroonga_client"
 
 [dependencies]
 hyper = "0.7.2"
