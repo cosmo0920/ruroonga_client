@@ -44,11 +44,11 @@ fn load() {
 ]"#;
     let mut request = groonga::HTTPRequest::new();
     let mut load_command = groonga::CommandQuery::new("load");
-    load_command.set_argument(vec![("table", "Sites"),
-                                   ("input_type","json"), ("values", data)]);
+    load_command.set_argument(vec![("table", "Sites")]);
     let load_url = format!("http://localhost:10041{}", load_command.encode());
     println!("load url: {}", load_url);
-    let load_res = request.load(load_url);
+    println!("load data: {}", data);
+    let load_res = request.load(load_url, data);
     let load_result = request.receive(&mut load_res.unwrap());
     println!("result: {}", load_result);
 }
