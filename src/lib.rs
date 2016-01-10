@@ -5,8 +5,9 @@ extern crate json_flex;
 use std::io::Read;
 
 use hyper::Client;
-use hyper::header::Connection;
-use hyper::header::ContentType;
+use hyper::client::response::Response;
+use hyper::error::Error as HyperError;
+use hyper::header::{Connection, ContentType};
 use url::form_urlencoded;
 use json_flex::{JFObject, Unwrap};
 
@@ -22,7 +23,7 @@ impl HTTPRequest {
     }
 
     pub fn get(&mut self, url: String)
-                   -> Result<hyper::client::response::Response, hyper::error::Error> {
+                   -> Result<Response, HyperError> {
         // Creating an outgoing request.
         let res = self.client.get(&*url)
             .header(Connection::close())
@@ -31,7 +32,7 @@ impl HTTPRequest {
     }
 
     pub fn load(&mut self, url: String, body: &str)
-                   -> Result<hyper::client::response::Response, hyper::error::Error> {
+                   -> Result<Response, HyperError> {
         // Creating an loading data request via POST.
         let res = self.client.post(&*url)
             .header(ContentType::json())
@@ -40,7 +41,7 @@ impl HTTPRequest {
         res
     }
 
-    pub fn receive(&mut self, res: &mut hyper::client::response::Response) -> String {
+    pub fn receive(&mut self, res: &mut Response) -> String {
         // Read the Response.
         let mut body = String::new();
         res.read_to_string(&mut body).unwrap();
