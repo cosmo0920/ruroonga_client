@@ -76,19 +76,23 @@ fn main() {
     println!("status: {:?}", decode.status().unwrap());
     println!("start: {:?}", decode.start_time().unwrap());
     println!("elapsed: {:?}", decode.elapsed_time().unwrap());
-    println!("matched columns: {:?}", decode.matched_columns().unwrap());
-    let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
-    println!("index access: {:?}", vec[2]);
-    // Read got response
-    let mut result_vec: Vec<Result> = Vec::new();
-    // Skip reading result header
-    for v in decode.result().unwrap().pop().unwrap().unwrap_vec().iter().skip(2) {
-        println!("{:?}", v);
-        let raw = v.unwrap_vec();
-        let elem = Result { id: raw[0].unwrap_i64().clone(),
-                            key: raw[1].unwrap_string().clone(),
-                            title: raw[2].unwrap_string().clone() };
-        result_vec.push(elem.clone());
+    if decode.status().unwrap().clone() == 0 {
+        println!("matched columns: {:?}", decode.matched_columns().unwrap());
+        let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
+        println!("index access: {:?}", vec[2]);
+        // Read got response
+        let mut result_vec: Vec<Result> = Vec::new();
+        // Skip reading result header
+        for v in decode.result().unwrap().pop().unwrap().unwrap_vec().iter().skip(2) {
+            println!("{:?}", v);
+            let raw = v.unwrap_vec();
+            let elem = Result { id: raw[0].unwrap_i64().clone(),
+                                key: raw[1].unwrap_string().clone(),
+                                title: raw[2].unwrap_string().clone() };
+            result_vec.push(elem.clone());
+        }
+        println!("{:?}", result_vec);
+    } else {
+        println!("Couldn't get success response.")
     }
-    println!("{:?}", result_vec);
 }
