@@ -3,18 +3,18 @@ Ruroonga Client
 
 [![Build Status](https://travis-ci.org/cosmo0920/ruroonga_client.svg?branch=master)](https://travis-ci.org/cosmo0920/ruroonga_client)
 
-A tiny Groonga client written by Rust language.
+A tiny Groonga client via HTTP written by Rust language.
 
 ## Usage
 
-Add this to your Cargo.toml:
+Add this lines to your Cargo.toml:
 
 ```toml
 [dependencies]
 ruroonga_client = "*"
 ```
 
-and this to your crate root:
+and this lines to your crate root:
 
 ```rust
 extern crate ruroonga_client;
