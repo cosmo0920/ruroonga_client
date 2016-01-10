@@ -1,0 +1,12 @@
+language: rust
+sudo: false
+addons:
+  apt:
+    packages:
+    - libssl-dev
+rust:
+  - nightly
+  - beta
+  - 1.5.0
+scirpt:
+  - cargo test
