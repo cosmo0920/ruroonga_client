@@ -5,12 +5,14 @@ use json_flex::Unwrap;
 
 use ruroonga_client as groonga;
 
+const GROONGA_SERVER: &'static str = "localhost:10041";
+
 fn create_table() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("table_create");
     command.set_argument(vec![("name", "Sites"),
                               ("flags","TABLE_HASH_KEY"),("key_type","ShortText")]);
-    let url = format!("http://localhost:10041{}", command.encode());
+    let url = format!("http://{}{}", GROONGA_SERVER, command.encode());
     println!("load url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap());
@@ -22,7 +24,7 @@ fn create_column() {
     let mut command = groonga::CommandQuery::new("column_create");
     command.set_argument(vec![("table", "Sites"),
                               ("name","title"),("type","ShortText")]);
-    let url = format!("http://localhost:10041{}", command.encode());
+    let url = format!("http://{}{}", GROONGA_SERVER, command.encode());
     println!("load url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap());
@@ -45,7 +47,7 @@ fn load() {
     let mut request = groonga::HTTPRequest::new();
     let mut load_command = groonga::CommandQuery::new("load");
     load_command.set_argument(vec![("table", "Sites")]);
-    let load_url = format!("http://localhost:10041{}", load_command.encode());
+    let load_url = format!("http://{}{}", GROONGA_SERVER, load_command.encode());
     println!("load url: {}", load_url);
     println!("load data: {}", data);
     let load_res = request.load(load_url, data);
@@ -67,7 +69,7 @@ fn main() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("select");
     command.set_argument(vec![("table", "Sites")]);
-    let url = format!("http://localhost:10041{}", command.encode());
+    let url = format!("http://{}{}", GROONGA_SERVER, command.encode());
     println!("url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap());
