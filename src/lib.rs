@@ -122,7 +122,7 @@ impl ResultParser {
     }
 
     pub fn status(&mut self) -> Option<&i64> {
-        self.result[0][0].into_i64().clone()
+        self.result[0][0].into_i64()
     }
 
     pub fn start_time(&mut self) -> Option<&f64> {
