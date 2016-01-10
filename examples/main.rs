@@ -12,7 +12,7 @@ fn create_table() {
                               ("flags","TABLE_HASH_KEY"),("key_type","ShortText")]);
     let url = format!("http://localhost:10041{}", command.encode());
     println!("load url: {}", url);
-    let res = request.load(url);
+    let res = request.get(url);
     let result = request.receive(&mut res.unwrap());
     println!("result: {}", result);
 }
@@ -24,7 +24,7 @@ fn create_column() {
                               ("name","title"),("type","ShortText")]);
     let url = format!("http://localhost:10041{}", command.encode());
     println!("load url: {}", url);
-    let res = request.load(url);
+    let res = request.get(url);
     let result = request.receive(&mut res.unwrap());
     println!("result: {}", result);
 }
