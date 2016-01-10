@@ -53,6 +53,13 @@ fn load() {
     println!("result: {}", load_result);
 }
 
+#[derive(Clone, Debug)]
+struct Result {
+    id: i64,
+    key: String,
+    title: String
+}
+
 fn main() {
     create_table();
     create_column();
@@ -73,17 +80,15 @@ fn main() {
     let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
     println!("index access: {:?}", vec[2]);
     // Read got response
-    for v in decode.result().unwrap().pop().unwrap().unwrap_vec().iter() {
+    let mut result_vec: Vec<Result> = Vec::new();
+    // Skip reading result header
+    for v in decode.result().unwrap().pop().unwrap().unwrap_vec().iter().skip(2) {
         println!("{:?}", v);
-        for vv in v.unwrap_vec().iter() {
-            if vv.is_integer() {
-                println!("{:?}", vv.unwrap_i64())
-            } else if vv.is_string() {
-                println!("{:?}", vv.unwrap_string())
-            } else {
-                println!("-- schema column --");
-                println!("{:?}", vv)
-            }
-        }
+        let raw = v.unwrap_vec();
+        let elem = Result { id: raw[0].unwrap_i64().clone(),
+                            key: raw[1].unwrap_string().clone(),
+                            title: raw[2].unwrap_string().clone() };
+        result_vec.push(elem.clone());
     }
+    println!("{:?}", result_vec);
 }
