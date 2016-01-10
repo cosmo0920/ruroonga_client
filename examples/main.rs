@@ -78,12 +78,13 @@ fn main() {
     println!("elapsed: {:?}", decode.elapsed_time().unwrap());
     if decode.status().unwrap().clone() == 0 {
         println!("matched columns: {:?}", decode.matched_columns().unwrap());
-        let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
-        println!("index access: {:?}", vec[2]);
+        let decoded_vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
+        println!("index access: {:?}", decoded_vec[2]);
         // Read got response
         let mut result_vec: Vec<Result> = Vec::new();
+        println!("-- Display raw decoded json values --");
         // Skip reading result header
-        for v in decode.result().unwrap().pop().unwrap().unwrap_vec().iter().skip(2) {
+        for v in decoded_vec.iter().skip(2) {
             println!("{:?}", v);
             let raw = v.unwrap_vec();
             let elem = Result { id: raw[0].unwrap_i64().clone(),
@@ -91,6 +92,7 @@ fn main() {
                                 title: raw[2].unwrap_string().clone() };
             result_vec.push(elem.clone());
         }
+        println!("-- Mapped to user-defined struct -- ");
         println!("{:?}", result_vec);
     } else {
         println!("Couldn't get success response.")
