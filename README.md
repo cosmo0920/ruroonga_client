@@ -1,6 +1,8 @@
 Ruroonga Client
 ===
 
+[![Build Status](https://travis-ci.org/cosmo0920/ruroonga_client.svg?branch=master)](https://travis-ci.org/cosmo0920/ruroonga_client)
+
 A tiny Groonga client written by Rust language.
 
 ## Usage
