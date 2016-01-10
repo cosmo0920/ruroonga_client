@@ -9,7 +9,7 @@ A tiny Groonga client written by Rust language.
 
 Add this to your Cargo.toml:
 
-```
+```toml
 [dependencies]
 ruroonga_client = "*"
 ```
