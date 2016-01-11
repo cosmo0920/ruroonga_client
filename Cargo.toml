@@ -1,6 +1,6 @@
 [package]
 name = "ruroonga_client"
-version = "0.1.0"
+version = "0.1.1"
 description = "A tiny Groonga HTTP client."
 authors = ["Hiroshi Hatake <cosmo0920.wp@gmail.com>"]
 keywords = ["groonga"]
