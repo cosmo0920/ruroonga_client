@@ -41,6 +41,25 @@ fn main() {
 }
 ```
 
+#### Advanced
+
+If you encountered building failure which is dependent openssl library,
+you should define several environment variables.
+
+##### For OS X
+
+You can use homebrewed openssl like this:
+
+```bash
+$ export OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
+$ export DEP_OPENSSL_INCLUDE=/usr/local/opt/openssl/include
+```
+And then, `cargo build`.
+
+##### For Windows
+
+In more detail, see: https://github.com/sfackler/rust-openssl#windows
+
 ## LICENSE
 
 [MIT](LICENSE).
