@@ -6,6 +6,6 @@ mod http_request;
 mod command_query;
 mod result_parser;
 
-pub use http_request::*;
-pub use command_query::*;
-pub use result_parser::*;
+pub use http_request::HTTPRequest;
+pub use command_query::CommandQuery;
+pub use result_parser::ResultParser;
