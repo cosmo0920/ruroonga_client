@@ -40,12 +40,12 @@ pub struct ResultParser {
 /// Groonga returns following array json:
 ///
 /// success response:
-/// `[[status,start_time, elapsed_time],
-///   [[[matched_columns],[Array([column1,type1], ...)],
+/// `[[status, start_time, elapsed_time],
+///   [[[matched_columns], [Array([column1, type1], ...)],
 ///     [Array([result1, result2, ...])]]]]`
 ///
 /// error response:
-/// `[[status,start_time, elapsed_time, error_information, ...]]`
+/// `[[status, start_time, elapsed_time, error_information, ...]]`
 impl ResultParser {
     pub fn new(json: String) -> ResultParser {
         ResultParser{result: json_flex::decode(json)}
