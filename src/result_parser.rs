@@ -169,4 +169,12 @@ mod tests {
         let expected = r#"Array([Integer(1), String("http://example.org/"), String("This is test record 1!")])"#.to_owned();
         assert_eq!(expected, format!("{:?}", vec[2]))
     }
+
+    #[test]
+    fn row_columns() {
+        let mut decode = ResultParser::new(RESPONSE.to_string());
+        let vec = decode.into_row().columns().unwrap();
+        let expected = r#"Array([Integer(1), String("http://example.org/"), String("This is test record 1!")])"#.to_owned();
+        assert_eq!(expected, format!("{:?}", vec[2]))
+    }
 }
