@@ -14,18 +14,27 @@ impl<'a> CommandQuery<'a> {
         CommandQuery{command: command.to_string(), arguments: arguments}
     }
 
+    /// Get vectorize `("key", "value")` pairs to construct url encoded query.
     pub fn get_command(&mut self) -> String {
         self.command.clone()
     }
 
+    /// Set vectorize `("key", "value")` pairs to construct url encoded query.
     pub fn set_argument(&mut self, arguments: Query<'a>) {
         self.arguments = arguments
     }
 
+    /// Create url encoded command query.
+    ///
+    /// `vec![("key","value")]` interprets to `"key=value"`.
+    /// And two or more value pair are concatinate with `&`.
     pub fn make_query(&mut self) -> String {
         form_urlencoded::serialize(self.arguments.clone().into_iter())
     }
 
+    // TODO: `/d/` prefix should be cutomizable.
+    ///
+    /// Create Groonga HTTP server query URL.
     pub fn encode(&mut self) -> String {
         format!("/d/{}?{}", self.get_command(), self.make_query())
     }

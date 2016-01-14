@@ -10,24 +10,24 @@ pub struct HTTPRequest {
 }
 
 impl HTTPRequest {
+    /// Create a HTTP client.
     pub fn new() -> HTTPRequest {
-        // Create a client.
         let client = Client::new();
         HTTPRequest{client: client}
     }
 
+    /// Creating an outgoing request with HTTP.
     pub fn get(&mut self, url: String)
                    -> Result<Response, HyperError> {
-        // Creating an outgoing request.
         let res = self.client.get(&*url)
             .header(Connection::close())
             .send();
         res
     }
 
+    /// Creating an loading data request via POST.
     pub fn load(&mut self, url: String, body: String)
                    -> Result<Response, HyperError> {
-        // Creating an loading data request via POST.
         let res = self.client.post(&*url)
             .header(ContentType::json())
             .body(&*body)
@@ -35,9 +35,9 @@ impl HTTPRequest {
         res
     }
 
+    /// Read the Response.
     pub fn receive(&mut self, res: &mut Response)
                    -> Result<String, io::Error> {
-        // Read the Response.
         let mut body = String::new();
         try!(res.read_to_string(&mut body));
 
