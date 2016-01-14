@@ -64,7 +64,7 @@ impl ResultParser {
             None => return None
         };
         let pop = match vectoizable.clone().pop() {
-            Some(pop) => pop.clone(),
+            Some(pop) => pop,
             None => return None
         };
         match pop.into_i64().clone() {
