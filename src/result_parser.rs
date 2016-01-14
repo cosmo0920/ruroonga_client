@@ -1,5 +1,5 @@
 use json_flex;
-use json_flex::{JFObject, Unwrap};
+use json_flex::JFObject;
 
 #[derive(Clone)]
 pub struct Rows {
@@ -58,16 +58,24 @@ impl ResultParser {
     }
 
     #[inline]
-    fn matched_columns_num(&mut self) -> i64 {
-        self.result[1][0][0]
-            .unwrap_vec().clone()
-            .pop().unwrap()
-            .unwrap_i64().clone()
+    fn matched_columns_num(&mut self) -> Option<i64> {
+        let vectoizable = match self.result[1][0][0].into_vec().clone() {
+            Some(elem) => elem,
+            None => return None
+        };
+        let pop = match vectoizable.clone().pop() {
+            Some(pop) => pop.clone(),
+            None => return None
+        };
+        match pop.into_i64().clone() {
+            Some(v) => return Some(v.clone()),
+            None => return None
+        }
     }
 
     pub fn matched_columns(&mut self) -> Option<i64> {
         match self.status() {
-            Some(&0) => Some(self.matched_columns_num()),
+            Some(&0) => self.matched_columns_num(),
             Some(_) => None,
             None    => None
         }
