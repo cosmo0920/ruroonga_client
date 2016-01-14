@@ -8,4 +8,4 @@ mod result_parser;
 
 pub use http_request::HTTPRequest;
 pub use command_query::CommandQuery;
-pub use result_parser::ResultParser;
+pub use result_parser::{ResultParser, Rows};

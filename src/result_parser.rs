@@ -1,6 +1,32 @@
 use json_flex;
 use json_flex::{JFObject, Unwrap};
 
+#[derive(Clone)]
+pub struct Rows {
+    data: Option<Vec<JFObject>>
+}
+
+impl Rows {
+    pub fn new(data: Option<Vec<JFObject>>) -> Rows {
+        Rows { data: data }
+    }
+
+    pub fn columns(&mut self) -> Option<Vec<JFObject>> {
+        let popable = match self.data.clone() {
+            Some(v) => v,
+            None => return None
+        };
+        let pop = match popable.clone().pop() {
+            Some(v) => v,
+            None => return None
+        };
+        match pop.into_vec().clone() {
+            Some(v) => return Some(v.clone()),
+            None => return None
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct ResultParser {
     result: Box<JFObject>
@@ -53,6 +79,10 @@ impl ResultParser {
             Some(_) => Some(vec![self.result[0][3].clone()]),
             None    => None
         }
+    }
+
+    pub fn into_row(&mut self) -> Rows {
+        Rows::new(self.result())
     }
 }
 

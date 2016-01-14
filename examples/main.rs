@@ -80,7 +80,8 @@ fn main() {
     println!("elapsed: {:?}", decode.elapsed_time().unwrap());
     if decode.status().unwrap().clone() == 0 {
         println!("matched columns: {:?}", decode.matched_columns().unwrap());
-        let decoded_vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
+        let decoded = groonga::Rows::new(decode.result());
+        let decoded_vec = decoded.clone().columns().unwrap();
         println!("index access: {:?}", decoded_vec[2]);
         // Read got response
         let mut result_vec: Vec<Result> = Vec::new();
