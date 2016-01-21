@@ -7,14 +7,14 @@ A tiny Groonga client via HTTP written by Rust language.
 
 ## Usage
 
-Add this lines to your Cargo.toml:
+Add following lines to your Cargo.toml:
 
 ```toml
 [dependencies]
 ruroonga_client = "*"
 ```
 
-and this lines to your crate root:
+and following lines to your crate root:
 
 ```rust
 extern crate ruroonga_client;
