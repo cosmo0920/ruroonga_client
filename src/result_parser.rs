@@ -24,8 +24,8 @@ impl Rows {
             None => return None
         };
         match pop.into_vec().clone() {
-            Some(v) => return Some(v.clone()),
-            None => return None
+            Some(v) => Some(v.clone()),
+            None => None
         }
     }
 }
@@ -104,8 +104,8 @@ impl ResultParser {
             None => return None
         };
         match pop.into_i64().clone() {
-            Some(v) => return Some(v.clone()),
-            None => return None
+            Some(v) => Some(v.clone()),
+            None => None
         }
     }
 
