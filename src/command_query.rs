@@ -5,13 +5,28 @@ pub type Query<'a> = Vec<(&'a str, &'a str)>;
 #[derive(Clone, Debug)]
 pub struct CommandQuery<'a> {
     command: String,
-    arguments: Query<'a>
+    arguments: Query<'a>,
+    prefix: String
+}
+
+impl<'a> Default for CommandQuery<'a> {
+    fn default() -> CommandQuery<'a> {
+        CommandQuery{
+            command: "".to_string(),
+            arguments: vec![],
+            prefix: "/d".to_string()
+        }
+    }
 }
 
 impl<'a> CommandQuery<'a> {
     pub fn new(command: &str) -> CommandQuery {
-        let arguments: Query = vec![];
-        CommandQuery{command: command.to_string(), arguments: arguments}
+        let default: CommandQuery = Default::default();
+        CommandQuery{
+            command: command.to_string(),
+            arguments: default.arguments,
+            prefix: default.prefix
+        }
     }
 
     /// Get vectorize `("key", "value")` pairs to construct url encoded query.
@@ -24,6 +39,19 @@ impl<'a> CommandQuery<'a> {
         self.arguments = arguments
     }
 
+    #[doc(hidden)]
+    // get HTTP URI prefix. default: /d
+    // This function is provided for advanced user.
+    pub fn get_prefix(&mut self) -> String {
+        self.prefix.clone()
+    }
+
+    #[doc(hidden)]
+    // set HTTP URI prefix. This function is provided for advanced user.
+    pub fn set_prefix(&mut self, prefix: String) {
+        self.prefix = prefix
+    }
+
     /// Create url encoded command query.
     ///
     /// `vec![("key","value")]` interprets to `"key=value"`.
@@ -32,11 +60,11 @@ impl<'a> CommandQuery<'a> {
         form_urlencoded::serialize(self.arguments.clone().into_iter())
     }
 
-    // TODO: `/d/` prefix should be cutomizable.
     ///
     /// Create Groonga HTTP server query URL.
     pub fn encode(&mut self) -> String {
-        format!("/d/{}?{}", self.get_command(), self.make_query())
+        format!("{}/{}?{}",
+                self.get_prefix(), self.get_command(), self.make_query())
     }
 }
 
