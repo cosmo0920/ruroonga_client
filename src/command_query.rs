@@ -41,7 +41,7 @@ impl<'a> CommandQuery<'a> {
 
     #[doc(hidden)]
     // get HTTP URI prefix. default: /d
-    // This function is provided for advanced user.
+    // This function is mainly provided for internal usage.
     pub fn get_prefix(&mut self) -> String {
         self.prefix.clone()
     }
