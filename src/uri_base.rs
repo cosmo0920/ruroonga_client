@@ -15,7 +15,7 @@ impl Default for URIBase {
 
 impl URIBase {
     ///
-    /// Create URIBase struct
+    /// Create URIBase struct.
     ///
     /// Default values are:
     ///
@@ -28,20 +28,19 @@ impl URIBase {
         default
     }
 
-    /// Set base to replace default value with specified value
+    /// Set base to replace default value with specified value.
     pub fn base_uri(mut self, base_uri: String) -> URIBase {
         self.base_uri = base_uri;
         self
     }
 
-    /// Set port number to replace default value with specified value
+    /// Set port number to replace default value with specified value.
     pub fn port(mut self, port: u16) -> URIBase {
         self.port = port;
         self
     }
 
-    /// make base uri
-    /// Default value is: "localhost:10041"
+    /// Build and get base uri.
     pub fn build(self) -> String {
         format!("http://{}:{}", self.base_uri, self.port)
     }
