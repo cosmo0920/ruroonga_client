@@ -33,7 +33,8 @@ fn main() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("select");
     command.set_argument(vec![("table", "Sites")]);
-    let url = format!("http://localhost:10041{}", command.encode());
+    let uri_base = groonga::URIBase::new().build();
+    let url = format!(uri_base, command.encode());
     println!("url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap()).unwrap();
