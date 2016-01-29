@@ -10,11 +10,11 @@ const GROONGA_SERVER: &'static str = "localhost";
 fn create_table() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("table_create");
-    let mut uri_base = groonga::URIBase::new();
+    let uri_base = groonga::URIBase::new()
+        .base_uri(GROONGA_SERVER.to_string()).build();
     command.set_argument(vec![("name", "Sites"),
                               ("flags","TABLE_HASH_KEY"),("key_type","ShortText")]);
-    uri_base.set_uri(GROONGA_SERVER.to_string());
-    let url = format!("{}{}", uri_base.uri(), command.encode());
+    let url = format!("{}{}", uri_base, command.encode());
     println!("load url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap()).unwrap();
@@ -24,11 +24,11 @@ fn create_table() {
 fn create_column() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("column_create");
-    let mut uri_base = groonga::URIBase::new();
+    let uri_base = groonga::URIBase::new()
+        .base_uri(GROONGA_SERVER.to_string()).build();
     command.set_argument(vec![("table", "Sites"),
                               ("name","title"),("type","ShortText")]);
-    uri_base.set_uri(GROONGA_SERVER.to_string());
-    let url = format!("{}{}", uri_base.uri(), command.encode());
+    let url = format!("{}{}", uri_base, command.encode());
     println!("load url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap()).unwrap();
@@ -50,10 +50,10 @@ fn load() {
 ]"#;
     let mut request = groonga::HTTPRequest::new();
     let mut load_command = groonga::CommandQuery::new("load");
-    let mut uri_base = groonga::URIBase::new();
+    let uri_base = groonga::URIBase::new()
+        .base_uri(GROONGA_SERVER.to_string()).build();
     load_command.set_argument(vec![("table", "Sites")]);
-    uri_base.set_uri(GROONGA_SERVER.to_string());
-    let load_url = format!("{}{}", uri_base.uri(), load_command.encode());
+    let load_url = format!("{}{}", uri_base, load_command.encode());
     println!("load url: {}", load_url);
     println!("load data: {}", data);
     let load_res = request.load(load_url, data.to_string());
@@ -74,10 +74,10 @@ fn main() {
     load();
     let mut request = groonga::HTTPRequest::new();
     let mut command = groonga::CommandQuery::new("select");
-    let mut uri_base = groonga::URIBase::new();
+    let uri_base = groonga::URIBase::new()
+        .base_uri(GROONGA_SERVER.to_string()).build();
     command.set_argument(vec![("table", "Sites")]);
-    uri_base.set_uri(GROONGA_SERVER.to_string());
-    let url = format!("{}{}", uri_base.uri(), command.encode());
+    let url = format!("{}{}", uri_base, command.encode());
     println!("url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap()).unwrap();

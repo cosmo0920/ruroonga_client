@@ -28,19 +28,21 @@ impl URIBase {
         default
     }
 
-    /// Set base_uri to replace default value with specified value
-    pub fn set_uri(&mut self, base_uri: String) {
-        self.base_uri = base_uri
+    /// Set base to replace default value with specified value
+    pub fn base_uri(mut self, base_uri: String) -> URIBase {
+        self.base_uri = base_uri;
+        self
     }
 
     /// Set port number to replace default value with specified value
-    pub fn set_port(&mut self, port: u16) {
-        self.port = port
+    pub fn port(mut self, port: u16) -> URIBase {
+        self.port = port;
+        self
     }
 
     /// make base uri
     /// Default value is: "localhost:10041"
-    pub fn uri(&mut self) -> String {
+    pub fn build(self) -> String {
         format!("http://{}:{}", self.base_uri, self.port)
     }
 }
@@ -51,17 +53,31 @@ mod tests {
 
     #[test]
     fn construct_uri_default() {
-        let mut uri_base = URIBase::new();
-        let uri_default = uri_base.uri();
-        assert_eq!("http://localhost:10041", uri_default)
+        let uri_base = URIBase::new().build();
+        assert_eq!("http://localhost:10041", uri_base)
     }
 
     #[test]
-    fn construct_uri_accessors() {
-        let mut uri_base = URIBase::new();
-        uri_base.set_uri("127.0.0.1".to_string());
-        assert_eq!("http://127.0.0.1:10041", uri_base.uri());
-        uri_base.set_port(10042);
-        assert_eq!("http://127.0.0.1:10042", uri_base.uri());
+    fn buikld_only_uri_base() {
+        let uri_base = URIBase::new();
+        let specified_base = uri_base.base_uri("127.0.0.1".to_string()).build();
+        assert_eq!("http://127.0.0.1:10041", specified_base);
     }
+
+    #[test]
+    fn build_only_port() {
+        let uri_base = URIBase::new();
+        let specified_port = uri_base.port(10042).build();
+        assert_eq!("http://localhost:10042", specified_port);
+    }
+
+    #[test]
+    fn uri_with_builder() {
+        let uri_base = URIBase::new()
+            .base_uri("127.0.1.1".to_string())
+            .port(10043);
+        let uri_default = uri_base.build();
+        assert_eq!("http://127.0.1.1:10043", uri_default)
+    }
+
 }
