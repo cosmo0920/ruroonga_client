@@ -9,6 +9,6 @@ readme = "README.md"
 homepage = "https://github.com/cosmo0920/ruroonga_client"
 
 [dependencies]
-hyper = "0.7.2"
-url = "0.5.2"
+hyper = "~0.7.2"
+url = "~0.5.2"
 json_flex = "0.3.2"
