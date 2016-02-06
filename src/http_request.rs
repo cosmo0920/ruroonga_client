@@ -3,7 +3,8 @@ use std::io::Read;
 use hyper::Client;
 use hyper::client::response::Response;
 use hyper::error::Error as HyperError;
-use hyper::header::{Connection, ContentType, Headers, Authorization, Basic};
+use hyper::header::{Connection, ContentType, ContentLength,
+                    Headers, Authorization, Basic};
 use std::option::Option;
 
 pub struct HTTPRequest {
@@ -71,8 +72,11 @@ impl HTTPRequest {
                 .headers(headers).body(&*body).send();
             res
         } else {
+            let mut headers = Headers::new();
+            headers.set(ContentType::json());
+            headers.set(ContentLength(body.len() as u64));
             let res = self.client.post(&*url)
-                .header(ContentType::json())
+                .headers(headers)
                 .body(&*body)
                 .send();
             res
