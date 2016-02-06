@@ -32,6 +32,20 @@ impl HTTPRequest {
         default
     }
 
+    /// Set authentication information.
+    ///
+    /// Note that this method also sets `auth: true` to use basic authentication.
+    ///
+    /// And this method uses builder pattern and returns `self`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// extern crate ruroonga_client as groonga;
+    ///
+    /// groonga::HTTPRequest::new()
+    ///   .authenticate("user".to_string(), "password".to_string());
+    /// ```
     pub fn authenticate(mut self, user: String, password: String)
                         -> HTTPRequest{
         self.user = user;
