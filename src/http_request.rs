@@ -63,7 +63,9 @@ impl HTTPRequest {
                 Basic { username: self.user.clone(),
                         password: self.password.clone() }));
             headers.set(Connection::close());
-            let res = self.client.get(&*url).headers(headers).send();
+            let res = self.client.get(&*url)
+                .headers(headers)
+                .send();
             res
         } else {
             let res = self.client.get(&*url)
@@ -83,7 +85,9 @@ impl HTTPRequest {
                         password: self.password.clone() }));
             headers.set(ContentType::json());
             let res = self.client.post(&*url)
-                .headers(headers).body(&*body).send();
+                .headers(headers)
+                .body(&*body)
+                .send();
             res
         } else {
             let mut headers = Headers::new();
