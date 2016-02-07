@@ -84,6 +84,7 @@ impl HTTPRequest {
                 password: self.password.clone(),
             }));
             headers.set(ContentType::json());
+            headers.set(ContentLength(body.len() as u64));
             let res = self.client
                           .post(&*url)
                           .headers(headers)
