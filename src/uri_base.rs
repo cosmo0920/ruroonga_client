@@ -1,14 +1,14 @@
 #[derive(Clone, Debug)]
 pub struct URIBase {
     base_uri: String,
-    port: u16
+    port: u16,
 }
 
 impl Default for URIBase {
     fn default() -> URIBase {
         URIBase {
             base_uri: "localhost".to_string(),
-            port: 10041
+            port: 10041,
         }
     }
 }
@@ -59,7 +59,8 @@ mod tests {
     #[test]
     fn buikld_only_uri_base() {
         let uri_base = URIBase::new()
-            .base_uri("127.0.0.1".to_string()).build();
+                           .base_uri("127.0.0.1".to_string())
+                           .build();
         assert_eq!("http://127.0.0.1:10041", uri_base);
     }
 
@@ -72,9 +73,9 @@ mod tests {
     #[test]
     fn uri_with_builder() {
         let uri_base = URIBase::new()
-            .base_uri("127.0.1.1".to_string())
-            .port(10043)
-            .build();
+                           .base_uri("127.0.1.1".to_string())
+                           .port(10043)
+                           .build();
         assert_eq!("http://127.0.1.1:10043", uri_base)
     }
 

@@ -6,15 +6,15 @@ pub type Query<'a> = Vec<(&'a str, &'a str)>;
 pub struct CommandQuery<'a> {
     command: String,
     arguments: Query<'a>,
-    prefix: String
+    prefix: String,
 }
 
 impl<'a> Default for CommandQuery<'a> {
     fn default() -> CommandQuery<'a> {
-        CommandQuery{
+        CommandQuery {
             command: "".to_string(),
             arguments: vec![],
-            prefix: "/d".to_string()
+            prefix: "/d".to_string(),
         }
     }
 }
@@ -22,10 +22,10 @@ impl<'a> Default for CommandQuery<'a> {
 impl<'a> CommandQuery<'a> {
     pub fn new(command: &str) -> CommandQuery {
         let default: CommandQuery = Default::default();
-        CommandQuery{
+        CommandQuery {
             command: command.to_string(),
             arguments: default.arguments,
-            prefix: default.prefix
+            prefix: default.prefix,
         }
     }
 
@@ -64,7 +64,9 @@ impl<'a> CommandQuery<'a> {
     /// Create Groonga HTTP server query URL.
     pub fn encode(&mut self) -> String {
         format!("{}/{}?{}",
-                self.get_prefix(), self.get_command(), self.make_query())
+                self.get_prefix(),
+                self.get_command(),
+                self.make_query())
     }
 }
 
@@ -84,8 +86,9 @@ mod tests {
     fn construct_complex_query() {
         let mut command = CommandQuery::new("select");
         command.set_argument(vec![("table", "Site"),
-                                  ("--query","\'_key:\"http://example.org/\"\'")]);
-        let url_encoded = "/d/select?table=Site&--query=%27_key%3A%22http%3A%2F%2Fexample.org%2F%22%27";
+                                  ("--query", "\'_key:\"http://example.org/\"\'")]);
+        let url_encoded = "/d/select?table=Site&--query=%27_key%3A%22http%3A%2F%2Fexample.\
+                           org%2F%22%27";
         assert_eq!(url_encoded, command.encode());
     }
 }
