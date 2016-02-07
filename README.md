@@ -35,7 +35,7 @@ fn main() {
     let mut command = groonga::CommandQuery::new("select");
     command.set_argument(vec![("table", "Sites")]);
     let uri_base = groonga::URIBase::new().build();
-    let url = format!(uri_base, command.encode());
+    let url = groonga::RequestURI::new(uri_base, command.encode()).url();
     println!("url: {}", url);
     let res = request.get(url);
     let result = request.receive(&mut res.unwrap()).unwrap();
