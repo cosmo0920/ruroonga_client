@@ -57,7 +57,7 @@ mod tests {
     }
 
     #[test]
-    fn buikld_only_uri_base() {
+    fn build_only_uri_base() {
         let uri_base = URIBase::new()
                            .base_uri("127.0.0.1".to_string())
                            .build();
