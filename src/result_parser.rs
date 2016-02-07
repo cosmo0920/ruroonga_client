@@ -145,19 +145,19 @@ impl ResultParser {
 mod tests {
     use super::*;
 
-    const RESPONSE: &'static str = "
+    const RESPONSE: &'static str = r#"
     [[0,1452348610.39281,0.000101566314697266],
     [[[9],
-     [[\"_id\",\"UInt32\"],[\"_key\",\"ShortText\"],[\"title\",\"ShortText\"]],
-     [1,\"http://example.org/\",\"This is test record 1!\"],
-     [2,\"http://example.net/\",\"test record 2.\"],
-     [3,\"http://example.com/\",\"test test record three.\"],
-     [4,\"http://example.net/afr\",\"test record four.\"],
-     [5,\"http://example.org/aba\",\"test test test record five.\"],
-     [6,\"http://example.com/rab\",\"test test test test record six.\"],
-     [7,\"http://example.net/atv\",\"test test test record seven.\"],
-     [8,\"http://example.org/gat\",\"test test record eight.\"],
-     [9,\"http://example.com/vdw\",\"test test record nine.\"]]]]";
+     [["_id","UInt32"],["_key","ShortText"],["title","ShortText"]],
+     [1,"http://example.org/","This is test record 1!"],
+     [2,"http://example.net/","test record 2."],
+     [3,"http://example.com/","test test record three."],
+     [4,"http://example.net/afr","test record four."],
+     [5,"http://example.org/aba","test test test record five."],
+     [6,"http://example.com/rab","test test test test record six."],
+     [7,"http://example.net/atv","test test test record seven."],
+     [8,"http://example.org/gat","test test record eight."],
+     [9,"http://example.com/vdw","test test record nine."]]]]"#;
 
     #[test]
     fn parse_result() {
