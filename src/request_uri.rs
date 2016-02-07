@@ -5,10 +5,22 @@ pub struct RequestURI {
 }
 
 impl RequestURI {
+    /// Create RequestURI type resource.
     pub fn new(base: String, query: String) -> RequestURI {
         RequestURI { base: base, query: query }
     }
 
+    /// Construct requesting URL from RequestURI type resource.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// extern crate ruroonga_client as groonga;
+    /// let uri_base = groonga::URIBase::new().build();
+    /// let mut command = groonga::CommandQuery::new("select");
+    /// command.set_argument(vec![("table", "Sites")]);
+    /// let url = groonga::RequestURI::new(uri_base, command.encode()).url();
+    /// ```
     pub fn url(self) -> String {
         let url = format!("{}{}", self.base, self.query);
         url
