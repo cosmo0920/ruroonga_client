@@ -7,7 +7,10 @@ pub struct RequestURI {
 impl RequestURI {
     /// Create RequestURI type resource.
     pub fn new(base: String, query: String) -> RequestURI {
-        RequestURI { base: base, query: query }
+        RequestURI {
+            base: base,
+            query: query,
+        }
     }
 
     /// Construct requesting URL from RequestURI type resource.
@@ -36,7 +39,8 @@ mod tests {
     #[test]
     fn construct_request_uri() {
         let url = RequestURI::new("http://localhost:10041".to_string(),
-                                  "/d/status".to_string()).url();
+                                  "/d/status".to_string())
+                      .url();
         assert_eq!("http://localhost:10041/d/status", url)
     }
 
