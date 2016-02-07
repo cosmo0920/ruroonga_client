@@ -43,6 +43,10 @@ fn main() {
 }
 ```
 
+### Testing
+
+Execute `cargo test`.
+
 #### Advanced
 
 If you encountered building failure which is dependent openssl library,
