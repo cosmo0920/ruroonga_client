@@ -112,3 +112,20 @@ impl HTTPRequest {
         Ok(body)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn use_auth() {
+        let req = HTTPRequest::new().authenticate("user".to_string(), "password".to_string());
+        assert_eq!(true, req.auth)
+    }
+
+    #[test]
+    fn dont_use_auth() {
+        let req = HTTPRequest::new();
+        assert_eq!(false, req.auth)
+    }
+}
