@@ -54,56 +54,38 @@ impl HTTPRequest {
 
     /// Creating an outgoing request with HTTP.
     pub fn get(&mut self, url: String) -> Result<Response, HyperError> {
+        let mut headers = Headers::new();
         if self.auth {
-            let mut headers = Headers::new();
             headers.set(Authorization(Basic {
                 username: self.user.clone(),
                 password: self.password.clone(),
             }));
-            headers.set(Connection::close());
-            let res = self.client
-                          .get(&*url)
-                          .headers(headers)
-                          .send();
-            res
-        } else {
-            let mut headers = Headers::new();
-            headers.set(Connection::close());
-            let res = self.client
-                          .get(&*url)
-                          .headers(headers)
-                          .send();
-            res
         }
+        headers.set(Connection::close());
+        let res = self.client
+                      .get(&*url)
+                      .headers(headers)
+                      .send();
+        res
     }
 
     /// Creating an loading data request via POST.
     pub fn load(&mut self, url: String, body: String) -> Result<Response, HyperError> {
+        let mut headers = Headers::new();
         if self.auth {
-            let mut headers = Headers::new();
             headers.set(Authorization(Basic {
                 username: self.user.clone(),
                 password: self.password.clone(),
             }));
-            headers.set(ContentType::json());
-            headers.set(ContentLength(body.len() as u64));
-            let res = self.client
-                          .post(&*url)
-                          .headers(headers)
-                          .body(&*body)
-                          .send();
-            res
-        } else {
-            let mut headers = Headers::new();
-            headers.set(ContentType::json());
-            headers.set(ContentLength(body.len() as u64));
-            let res = self.client
-                          .post(&*url)
-                          .headers(headers)
-                          .body(&*body)
-                          .send();
-            res
         }
+        headers.set(ContentType::json());
+        headers.set(ContentLength(body.len() as u64));
+        let res = self.client
+                      .post(&*url)
+                      .headers(headers)
+                      .body(&*body)
+                      .send();
+        res
     }
 
     /// Read the Response.
