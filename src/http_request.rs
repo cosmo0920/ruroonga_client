@@ -67,9 +67,11 @@ impl HTTPRequest {
                           .send();
             res
         } else {
+            let mut headers = Headers::new();
+            headers.set(Connection::close());
             let res = self.client
                           .get(&*url)
-                          .header(Connection::close())
+                          .headers(headers)
                           .send();
             res
         }
