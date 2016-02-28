@@ -86,8 +86,8 @@ mod tests {
     fn construct_complex_query() {
         let mut command = CommandQuery::new("select");
         command.set_argument(vec![("table", "Site"),
-                                  ("--query", "\'_key:\"http://example.org/\"\'")]);
-        let url_encoded = "/d/select?table=Site&--query=%27_key%3A%22http%3A%2F%2Fexample.\
+                                  ("query", "\'_key:\"http://example.org/\"\'")]);
+        let url_encoded = "/d/select?table=Site&query=%27_key%3A%22http%3A%2F%2Fexample.\
                            org%2F%22%27";
         assert_eq!(url_encoded, command.encode());
     }
