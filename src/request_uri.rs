@@ -18,11 +18,12 @@ impl RequestURI {
     /// # Examples
     ///
     /// ```
-    /// extern crate ruroonga_client as groonga;
-    /// let uri_base = groonga::URIBase::new().build();
-    /// let mut command = groonga::CommandQuery::new("select");
+    /// use ruroonga_client;
+    /// use ruroonga_client::builtin::command_query::CommandQuery;
+    /// let uri_base = ruroonga_client::URIBase::new().build();
+    /// let mut command = CommandQuery::new("select");
     /// command.set_argument(vec![("table", "Sites")]);
-    /// let url = groonga::RequestURI::new(uri_base, command.encode()).url();
+    /// let url = ruroonga_client::RequestURI::new(uri_base, command.encode()).url();
     /// ```
     pub fn url(self) -> String {
         let url = format!("{}{}", self.base, self.query);
@@ -33,7 +34,7 @@ impl RequestURI {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use command_query::CommandQuery;
+    use builtin::command_query::CommandQuery;
     use uri_base::URIBase;
 
     #[test]

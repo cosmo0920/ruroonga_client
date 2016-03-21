@@ -1,15 +1,15 @@
-extern crate ruroonga_client;
+extern crate ruroonga_client as groonga;
 extern crate json_flex;
 
 use json_flex::Unwrap;
 
-use ruroonga_client as groonga;
+use groonga::builtin::command_query::CommandQuery;
 
 const GROONGA_SERVER: &'static str = "localhost";
 
 fn create_table() {
     let mut request = groonga::HTTPRequest::new();
-    let mut command = groonga::CommandQuery::new("table_create");
+    let mut command = CommandQuery::new("table_create");
     let uri_base = groonga::URIBase::new()
         .base_uri(GROONGA_SERVER.to_string()).build();
     command.set_argument(vec![("name", "Sites"),
@@ -23,7 +23,7 @@ fn create_table() {
 
 fn create_column() {
     let mut request = groonga::HTTPRequest::new();
-    let mut command = groonga::CommandQuery::new("column_create");
+    let mut command = CommandQuery::new("column_create");
     let uri_base = groonga::URIBase::new()
         .base_uri(GROONGA_SERVER.to_string()).build();
     command.set_argument(vec![("table", "Sites"),
@@ -49,7 +49,7 @@ fn load() {
 {"_key":"http://example.com/vdw","title":"test test record nine."},
 ]"#;
     let mut request = groonga::HTTPRequest::new();
-    let mut load_command = groonga::CommandQuery::new("load");
+    let mut load_command = CommandQuery::new("load");
     let uri_base = groonga::URIBase::new()
         .base_uri(GROONGA_SERVER.to_string()).build();
     load_command.set_argument(vec![("table", "Sites")]);
@@ -73,7 +73,7 @@ fn main() {
     create_column();
     load();
     let mut request = groonga::HTTPRequest::new();
-    let mut command = groonga::CommandQuery::new("select");
+    let mut command = CommandQuery::new("select");
     let uri_base = groonga::URIBase::new()
         .base_uri(GROONGA_SERVER.to_string()).build();
     command.set_argument(vec![("table", "Sites")]);
