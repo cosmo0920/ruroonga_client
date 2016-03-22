@@ -26,13 +26,14 @@ use ruroonga_client as groonga;
 ## Example
 
 ```rust
-extern crate ruroonga_client;
+extern crate ruroonga_client as groonga;
 
-use ruroonga_client as groonga;
+use groonga::builtin::command_query::CommandQuery;
+
 
 fn main() {
     let mut request = groonga::HTTPRequest::new();
-    let mut command = groonga::CommandQuery::new("select");
+    let mut command = CommandQuery::new("select");
     command.set_argument(vec![("table", "Sites")]);
     let uri_base = groonga::URIBase::new().build();
     let url = groonga::RequestURI::new(uri_base, command.encode()).url();
