@@ -4,6 +4,8 @@ Ruroonga Client
 [![Build Status](https://travis-ci.org/cosmo0920/ruroonga_client.svg?branch=master)](https://travis-ci.org/cosmo0920/ruroonga_client)
 [![](http://meritbadge.herokuapp.com/ruroonga_client)](https://crates.io/crates/ruroonga_client)
 
+[Documentation](http://cosmo0920.github.io/ruroonga_client/ruroonga_client/index.html)
+
 A tiny Groonga client via HTTP written by Rust language.
 
 ## Usage
