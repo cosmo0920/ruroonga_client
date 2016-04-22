@@ -14,7 +14,7 @@ Add following lines to your Cargo.toml:
 
 ```toml
 [dependencies]
-ruroonga_client = "*"
+ruroonga_client = "~0.4.0"
 ```
 
 and following lines to your crate root:
