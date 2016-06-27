@@ -59,8 +59,8 @@ mod tests {
     #[test]
     fn build_only_uri_base() {
         let uri_base = URIBase::new()
-                           .base_uri("127.0.0.1".to_string())
-                           .build();
+            .base_uri("127.0.0.1".to_string())
+            .build();
         assert_eq!("http://127.0.0.1:10041", uri_base);
     }
 
@@ -73,9 +73,9 @@ mod tests {
     #[test]
     fn uri_with_builder() {
         let uri_base = URIBase::new()
-                           .base_uri("127.0.1.1".to_string())
-                           .port(10043)
-                           .build();
+            .base_uri("127.0.1.1".to_string())
+            .port(10043)
+            .build();
         assert_eq!("http://127.0.1.1:10043", uri_base)
     }
 

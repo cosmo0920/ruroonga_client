@@ -41,7 +41,7 @@ mod tests {
     fn construct_request_uri() {
         let url = RequestURI::new("http://localhost:10041".to_string(),
                                   "/d/status".to_string())
-                      .url();
+            .url();
         assert_eq!("http://localhost:10041/d/status", url)
     }
 

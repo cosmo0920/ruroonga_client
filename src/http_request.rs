@@ -63,9 +63,9 @@ impl HTTPRequest {
         }
         headers.set(Connection::close());
         let res = self.client
-                      .get(&*url)
-                      .headers(headers)
-                      .send();
+            .get(&*url)
+            .headers(headers)
+            .send();
         res
     }
 
@@ -81,10 +81,10 @@ impl HTTPRequest {
         headers.set(ContentType::json());
         headers.set(ContentLength(body.len() as u64));
         let res = self.client
-                      .post(&*url)
-                      .headers(headers)
-                      .body(&*body)
-                      .send();
+            .post(&*url)
+            .headers(headers)
+            .body(&*body)
+            .send();
         res
     }
 
