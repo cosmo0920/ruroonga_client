@@ -1,8 +1,6 @@
 extern crate ruroonga_client as groonga;
 extern crate json_flex;
 
-use json_flex::Unwrap;
-
 use groonga::builtin::command_query::CommandQuery;
 
 const GROONGA_SERVER: &'static str = "localhost";
