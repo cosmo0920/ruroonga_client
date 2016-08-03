@@ -3,6 +3,7 @@ Ruroonga Client
 
 [![Build Status](https://travis-ci.org/cosmo0920/ruroonga_client.svg?branch=master)](https://travis-ci.org/cosmo0920/ruroonga_client)
 [![](http://meritbadge.herokuapp.com/ruroonga_client)](https://crates.io/crates/ruroonga_client)
+[![Build status](https://ci.appveyor.com/api/projects/status/2hrd5g937u7uw8nl/branch/master?svg=true)](https://ci.appveyor.com/project/cosmo0920/ruroonga-client/branch/master)
 
 [Documentation](http://cosmo0920.github.io/ruroonga_client/ruroonga_client/index.html)
 
