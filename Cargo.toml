@@ -10,5 +10,5 @@ homepage = "https://github.com/cosmo0920/ruroonga_client"
 
 [dependencies]
 hyper = "~0.9.0"
-url = "~1.1.0"
+url = "~1.2.0"
 json_flex = "0.3.2"
