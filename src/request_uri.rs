@@ -1,15 +1,19 @@
+use std::borrow::Cow;
+
 #[derive(Debug, Clone)]
-pub struct RequestURI {
-    base: String,
-    query: String,
+pub struct RequestURI<'a> {
+    base: Cow<'a, str>,
+    query: Cow<'a, str>,
 }
 
-impl RequestURI {
+impl<'a> RequestURI<'a> {
     /// Create RequestURI type resource.
-    pub fn new(base: String, query: String) -> RequestURI {
+    pub fn new<T>(base: T, query: T) -> RequestURI<'a>
+        where T: Into<Cow<'a, str>>
+    {
         RequestURI {
-            base: base,
-            query: query,
+            base: base.into(),
+            query: query.into(),
         }
     }
 
@@ -26,7 +30,7 @@ impl RequestURI {
     /// let url = ruroonga_client::RequestURI::new(uri_base, command.encode()).url();
     /// ```
     pub fn url(self) -> String {
-        let url = format!("{}{}", self.base, self.query);
+        let url = format!("{}{}", self.base.into_owned(), self.query.into_owned());
         url
     }
 }
@@ -39,6 +43,14 @@ mod tests {
 
     #[test]
     fn construct_request_uri() {
+        let url = RequestURI::new("http://localhost:10041",
+                                  "/d/status")
+            .url();
+        assert_eq!("http://localhost:10041/d/status", url)
+    }
+
+    #[test]
+    fn construct_request_uri_with_owned_str() {
         let url = RequestURI::new("http://localhost:10041".to_string(),
                                   "/d/status".to_string())
             .url();
