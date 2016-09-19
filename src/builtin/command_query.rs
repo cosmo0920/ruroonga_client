@@ -24,9 +24,7 @@ impl<'a> CommandQuery<'a> {
     pub fn new<T>(command: T) -> CommandQuery<'a>
         where T: Into<Cow<'a, str>>
     {
-        CommandQuery {
-            command: command.into(), ..CommandQuery::default()
-        }
+        CommandQuery { command: command.into(), ..CommandQuery::default() }
     }
 
     /// Get vectorize `("key", "value")` pairs to construct url encoded query.
