@@ -1,55 +1,57 @@
 use url::form_urlencoded;
+use std::borrow::Cow;
 
 pub type Query<'a> = Vec<(&'a str, &'a str)>;
 
 #[derive(Clone, Debug)]
 pub struct CommandQuery<'a> {
-    command: String,
+    command: Cow<'a, str>,
     arguments: Query<'a>,
-    prefix: String,
+    prefix: Cow<'a, str>,
 }
 
 impl<'a> Default for CommandQuery<'a> {
     fn default() -> CommandQuery<'a> {
         CommandQuery {
-            command: "".to_string(),
+            command: "".into(),
             arguments: vec![],
-            prefix: "/d".to_string(),
+            prefix: "/d".into(),
         }
     }
 }
 
 impl<'a> CommandQuery<'a> {
-    pub fn new(command: &str) -> CommandQuery {
-        let default: CommandQuery = Default::default();
+    pub fn new<T>(command: T) -> CommandQuery<'a>
+        where T: Into<Cow<'a, str>>
+    {
         CommandQuery {
-            command: command.to_string(),
-            arguments: default.arguments,
-            prefix: default.prefix,
+            command: command.into(), ..CommandQuery::default()
         }
     }
 
     /// Get vectorize `("key", "value")` pairs to construct url encoded query.
-    pub fn get_command(&mut self) -> String {
-        self.command.clone()
+    pub fn get_command(&'a self) -> Cow<'a, str> {
+        Cow::Borrowed(&self.command)
     }
 
     /// Set vectorize `("key", "value")` pairs to construct url encoded query.
     pub fn set_argument(&mut self, arguments: Query<'a>) {
-        self.arguments = arguments
+        self.arguments = arguments.into()
     }
 
     #[doc(hidden)]
     // get HTTP URI prefix. default: /d
     // This function is mainly provided for internal usage.
-    pub fn get_prefix(&mut self) -> String {
-        self.prefix.clone()
+    pub fn get_prefix(&'a self) -> Cow<'a, str> {
+        Cow::Borrowed(&self.prefix)
     }
 
     #[doc(hidden)]
     // set HTTP URI prefix. This function is provided for advanced user.
-    pub fn set_prefix(&mut self, prefix: String) {
-        self.prefix = prefix
+    pub fn set_prefix<T>(&mut self, prefix: T)
+        where T: Into<Cow<'a, str>>
+    {
+        self.prefix = prefix.into()
     }
 
     /// Create url encoded command query.
@@ -64,10 +66,10 @@ impl<'a> CommandQuery<'a> {
 
     ///
     /// Create Groonga HTTP server query URL.
-    pub fn encode(&mut self) -> String {
+    pub fn encode(&'a mut self) -> String {
         format!("{}/{}?{}",
-                self.get_prefix(),
-                self.get_command(),
+                self.get_prefix().into_owned(),
+                self.get_command().into_owned(),
                 self.make_query())
     }
 }
