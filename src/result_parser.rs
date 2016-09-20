@@ -167,7 +167,10 @@ mod tests {
         assert_eq!(&0.000101566314697266, decode.elapsed_time().unwrap());
         assert_eq!(9, decode.matched_columns().unwrap());
         let vec = decode.result().unwrap().pop().unwrap().unwrap_vec().clone();
-        let expected = r#"Array([Integer(1), String("http://example.org/"), String("This is test record 1!")])"#.to_owned();
+        let expected = concat!(r#"Array([Integer(1), "#,
+                               r#"String("http://example.org/"), "#,
+                               r#"String("This is test record 1!")])"#)
+            .to_owned();
         assert_eq!(expected, format!("{:?}", vec[2]))
     }
 
@@ -175,7 +178,10 @@ mod tests {
     fn row_columns() {
         let mut decode = ResultParser::new(RESPONSE.to_string());
         let vec = decode.into_row().columns().unwrap();
-        let expected = r#"Array([Integer(1), String("http://example.org/"), String("This is test record 1!")])"#.to_owned();
+        let expected = concat!(r#"Array([Integer(1), "#,
+                               r#"String("http://example.org/"), "#,
+                               r#"String("This is test record 1!")])"#)
+            .to_owned();
         assert_eq!(expected, format!("{:?}", vec[2]))
     }
 }
