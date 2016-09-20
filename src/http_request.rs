@@ -42,17 +42,21 @@ impl HTTPRequest {
     /// extern crate ruroonga_client as groonga;
     ///
     /// groonga::HTTPRequest::new()
-    ///   .authenticate("user".to_string(), "password".to_string());
+    ///   .authenticate("user", "password");
     /// ```
-    pub fn authenticate(mut self, user: String, password: String) -> HTTPRequest {
-        self.user = user;
-        self.password = Some(password);
+    pub fn authenticate<T>(mut self, user: T, password: T) -> HTTPRequest
+        where T: AsRef<str>
+    {
+        self.user = user.as_ref().to_owned();
+        self.password = Some(password.as_ref().to_owned());
         self.auth = true;
         self
     }
 
     /// Creating an outgoing request with HTTP.
-    pub fn get(&mut self, url: String) -> Result<Response, HyperError> {
+    pub fn get<T>(&mut self, url: T) -> Result<Response, HyperError>
+        where T: AsRef<str>
+    {
         let mut headers = Headers::new();
         if self.auth {
             headers.set(Authorization(Basic {
@@ -62,13 +66,15 @@ impl HTTPRequest {
         }
         headers.set(Connection::close());
         self.client
-            .get(&*url)
+            .get(url.as_ref())
             .headers(headers)
             .send()
     }
 
     /// Creating an loading data request via POST.
-    pub fn load(&mut self, url: String, body: String) -> Result<Response, HyperError> {
+    pub fn load<T>(&mut self, url: T, body: String) -> Result<Response, HyperError>
+        where T: AsRef<str>
+    {
         let mut headers = Headers::new();
         if self.auth {
             headers.set(Authorization(Basic {
@@ -79,7 +85,7 @@ impl HTTPRequest {
         headers.set(ContentType::json());
         headers.set(ContentLength(body.len() as u64));
         self.client
-            .post(&*url)
+            .post(url.as_ref())
             .headers(headers)
             .body(&*body)
             .send()
@@ -100,6 +106,12 @@ mod tests {
 
     #[test]
     fn use_auth() {
+        let req = HTTPRequest::new().authenticate("user", "password");
+        assert_eq!(true, req.auth)
+    }
+
+    #[test]
+    fn use_auth_with_string() {
         let req = HTTPRequest::new().authenticate("user".to_string(), "password".to_string());
         assert_eq!(true, req.auth)
     }
