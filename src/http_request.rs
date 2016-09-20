@@ -27,8 +27,7 @@ impl Default for HTTPRequest {
 impl HTTPRequest {
     /// Create a HTTP client.
     pub fn new() -> HTTPRequest {
-        let default: HTTPRequest = Default::default();
-        default
+        HTTPRequest::default()
     }
 
     /// Set authentication information.
@@ -62,11 +61,10 @@ impl HTTPRequest {
             }));
         }
         headers.set(Connection::close());
-        let res = self.client
+        self.client
             .get(&*url)
             .headers(headers)
-            .send();
-        res
+            .send()
     }
 
     /// Creating an loading data request via POST.
@@ -80,12 +78,11 @@ impl HTTPRequest {
         }
         headers.set(ContentType::json());
         headers.set(ContentLength(body.len() as u64));
-        let res = self.client
+        self.client
             .post(&*url)
             .headers(headers)
             .body(&*body)
-            .send();
-        res
+            .send()
     }
 
     /// Read the Response.
