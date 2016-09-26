@@ -48,7 +48,7 @@ impl<'a> GQTPRequest<'a> {
         let _ = stream.write_all(send_buf.as_slice());
 
         // recv and check protocol header value
-        let mut read_buf = vec![0; 1024];
+        let mut read_buf = vec![0; 8192];
         let _ = stream.read(&mut read_buf);
         let mut buf = Cursor::new(read_buf);
 
@@ -73,7 +73,7 @@ impl<'a> GQTPRequest<'a> {
         let _ = buf.read_i32::<BigEndian>().unwrap();    // opaque
         let _ = buf.read_i64::<BigEndian>().unwrap();    // cas
         let mut msg = vec![0; size as usize];
-        let _ = buf.read_to_end(&mut msg);
+        let _ = buf.read(&mut msg).unwrap();
 
         Ok(String::from_utf8(msg).unwrap())
     }
