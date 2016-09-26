@@ -21,14 +21,26 @@ impl<'a> Default for GQTPRequest<'a> {
 }
 
 impl<'a> GQTPRequest<'a> {
+    /// Create a GQTP client.
     pub fn new() -> GQTPRequest<'a> {
         GQTPRequest::default()
     }
 
-    pub fn with_addr(addr: &'a str) -> GQTPRequest<'a> {
-        GQTPRequest { addr: addr }
+    /// Set host address for GQTP server.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// extern crate ruroonga_client as groonga;
+    ///
+    /// groonga::GQTPRequest::new().with_addr("127.0.0.1:20043");
+    /// ```
+    pub fn with_addr(mut self, addr: &'a str) -> GQTPRequest<'a> {
+        self.addr = addr;
+        self
     }
 
+    /// Send request and Receive response.
     pub fn call<C>(&self, command: C) -> Result<String, GQTPError>
         where C: AsRef<str>
     {
@@ -47,7 +59,7 @@ impl<'a> GQTPRequest<'a> {
         send_buf.extend_from_slice(command.as_ref().as_bytes());
         let _ = stream.write_all(send_buf.as_slice());
 
-        // recv and check protocol header value
+        // receive and check protocol header value
         let mut read_buf = vec![0; 8192];
         let _ = stream.read(&mut read_buf);
         let mut buf = Cursor::new(read_buf);
@@ -72,6 +84,8 @@ impl<'a> GQTPRequest<'a> {
         let size = buf.read_i32::<BigEndian>().unwrap();
         let _ = buf.read_i32::<BigEndian>().unwrap();    // opaque
         let _ = buf.read_i64::<BigEndian>().unwrap();    // cas
+
+        // read body
         let mut msg = vec![0; size as usize];
         let _ = buf.read(&mut msg).unwrap();
 
@@ -91,15 +105,7 @@ mod tests {
 
     #[test]
     fn smoke_gqtp_with_addr() {
-        let req = GQTPRequest::with_addr("127.0.0.1:20043");
+        let req = GQTPRequest::new().with_addr("127.0.0.1:20043");
         assert_eq!("127.0.0.1:20043", req.addr)
-    }
-
-    #[test]
-    fn smoke_gqtp_call() {
-        let req = GQTPRequest::new();
-        // req.call("select --table Entries --filter \'content @ \"fast\"\'");
-        let result_string = req.call("status").unwrap();
-        assert_eq!(result_string.contains("version"), true);
     }
 }
