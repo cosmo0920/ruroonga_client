@@ -3,6 +3,9 @@ use std::io::prelude::*;
 use std::net::TcpStream;
 use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
 
+const RECV_BUF_SIZE: usize = 8192;
+const GQTP_HEADER_SIZE: usize = 24;
+
 #[derive(Debug)]
 pub enum GQTPError {
     InvalidProtocol,
@@ -60,7 +63,7 @@ impl<'a> GQTPRequest<'a> {
         let _ = stream.write_all(send_buf.as_slice());
 
         // receive and check protocol header value
-        let mut read_buf = vec![0; 8192];
+        let mut read_buf = vec![0; RECV_BUF_SIZE];
         let _ = stream.read(&mut read_buf);
         let mut buf = Cursor::new(read_buf);
 
@@ -86,8 +89,25 @@ impl<'a> GQTPRequest<'a> {
         let _ = buf.read_i64::<BigEndian>().unwrap();    // cas
 
         // read body
-        let mut msg = vec![0; size as usize];
+        let mut msg_buf_len = if (size as usize + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
+            RECV_BUF_SIZE - GQTP_HEADER_SIZE
+        } else {
+            size as usize
+        };
+        let mut msg = vec![0; msg_buf_len];
         let _ = buf.read(&mut msg).unwrap();
+        if (size as usize + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
+            loop {
+                let mut read_buf = vec![0; RECV_BUF_SIZE];
+                let rsize = stream.read(&mut read_buf).unwrap();
+                msg.extend_from_slice(read_buf.as_ref());
+                msg_buf_len += rsize;
+                println!("msglen={}", msg_buf_len);
+                if msg_buf_len >= size as usize {
+                    break;
+                }
+            }
+        }
 
         Ok(String::from_utf8(msg).unwrap())
     }
