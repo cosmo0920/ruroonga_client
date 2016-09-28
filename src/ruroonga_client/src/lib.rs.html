@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -55,21 +56,33 @@
 <span id="12">12</span>
 <span id="13">13</span>
 <span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
 </pre><pre class='rust '>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>hyper</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>url</span>;
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>json_flex</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;gqtp&quot;</span>)]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>byteorder</span>;
 
 <span class='kw'>mod</span> <span class='ident'>http_request</span>;
 <span class='kw'>mod</span> <span class='ident'>result_parser</span>;
 <span class='kw'>mod</span> <span class='ident'>request_uri</span>;
 <span class='kw'>mod</span> <span class='ident'>uri_base</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>builtin</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;gqtp&quot;</span>)]</span>
+<span class='kw'>mod</span> <span class='ident'>gqtp_request</span>;
 
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>http_request</span>::<span class='ident'>HTTPRequest</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>result_parser</span>::{<span class='ident'>ResultParser</span>, <span class='ident'>Rows</span>};
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>request_uri</span>::<span class='ident'>RequestURI</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>uri_base</span>::<span class='ident'>URIBase</span>;
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;gqtp&quot;</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>gqtp_request</span>::<span class='ident'>GQTPRequest</span>;
 </pre>
 </section>
     <section id='search' class="content hidden"></section>
@@ -94,6 +107,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 

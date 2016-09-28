@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["builtin",""]],"struct":[["HTTPRequest",""],["RequestURI",""],["ResultParser",""],["Rows",""],["URIBase",""]]});
+initSidebarItems({"mod":[["builtin",""]],"struct":[["GQTPRequest","Request GQTP protocol over TcpStream"],["HTTPRequest",""],["RequestURI",""],["ResultParser",""],["Rows",""],["URIBase",""]]});
