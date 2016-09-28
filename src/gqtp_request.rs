@@ -1,3 +1,4 @@
+use std::io;
 use std::io::Cursor;
 use std::io::prelude::*;
 use std::net::TcpStream;
@@ -11,6 +12,13 @@ pub enum GQTPError {
     InvalidProtocol,
     InvalidBodySize,
     StatusError(u16),
+    IO(io::Error)
+}
+
+impl From<io::Error> for GQTPError {
+    fn from(err: io::Error) -> GQTPError {
+        GQTPError::IO(err)
+    }
 }
 
 /// Request [GQTP protocol](http://groonga.org/docs/spec/gqtp.html) over TcpStream
@@ -51,15 +59,15 @@ impl<'a> GQTPRequest<'a> {
         // send
         let mut stream = TcpStream::connect(self.addr).unwrap();
         let mut send_buf = vec![];
-        send_buf.write_u8(0xc7).unwrap();
-        send_buf.write_u8(0).unwrap();
-        send_buf.write_i16::<BigEndian>(0).unwrap();
-        send_buf.write_u8(0).unwrap();
-        send_buf.write_u8(0x02).unwrap();   // flags
-        send_buf.write_u16::<BigEndian>(0).unwrap();
-        send_buf.write_u32::<BigEndian>(command.as_ref().len() as u32).unwrap();
-        send_buf.write_u32::<BigEndian>(0).unwrap();
-        send_buf.write_u64::<BigEndian>(0).unwrap();
+        try!(send_buf.write_u8(0xc7));
+        try!(send_buf.write_u8(0));
+        try!(send_buf.write_i16::<BigEndian>(0));
+        try!(send_buf.write_u8(0));
+        try!(send_buf.write_u8(0x02));   // flags
+        try!(send_buf.write_u16::<BigEndian>(0));
+        try!(send_buf.write_u32::<BigEndian>(command.as_ref().len() as u32));
+        try!(send_buf.write_u32::<BigEndian>(0));
+        try!(send_buf.write_u64::<BigEndian>(0));
         send_buf.extend_from_slice(command.as_ref().as_bytes());
         let _ = stream.write_all(send_buf.as_slice());
 
