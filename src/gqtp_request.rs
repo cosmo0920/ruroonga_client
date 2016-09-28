@@ -76,26 +76,26 @@ impl<'a> GQTPRequest<'a> {
         let _ = stream.read(&mut read_buf);
         let mut buf = Cursor::new(read_buf);
 
-        let protocol = buf.read_u8().unwrap();
-        let query_type = buf.read_u8().unwrap();
+        let protocol = try!(buf.read_u8());
+        let query_type = try!(buf.read_u8());
         if protocol != 0xc7 || query_type > 5 {
             return Err(GQTPError::InvalidProtocol);
         }
-        let _ = buf.read_i16::<BigEndian>().unwrap();
-        let _ = buf.read_u8().unwrap();
+        let _ = try!(buf.read_i16::<BigEndian>());
+        let _ = try!(buf.read_u8());
 
-        let flags = buf.read_u8().unwrap();
+        let flags = try!(buf.read_u8());
         if !((flags & 0x01) == 0x01 || (flags & 0x02) == 0x02) {
             return Err(GQTPError::InvalidProtocol);
         }
 
-        let status = buf.read_u16::<BigEndian>().unwrap();
+        let status = try!(buf.read_u16::<BigEndian>());
         if status != 0 && status != 1 {
             return Err(GQTPError::StatusError(status));
         }
-        let size = buf.read_i32::<BigEndian>().unwrap();
-        let _ = buf.read_i32::<BigEndian>().unwrap();    // opaque
-        let _ = buf.read_i64::<BigEndian>().unwrap();    // cas
+        let size = try!(buf.read_i32::<BigEndian>());
+        let _ = try!(buf.read_i32::<BigEndian>());    // opaque
+        let _ = try!(buf.read_i64::<BigEndian>());    // cas
 
         // read body
         let mut msg_buf_len = if (size as usize + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
@@ -104,11 +104,11 @@ impl<'a> GQTPRequest<'a> {
             size as usize
         };
         let mut msg = vec![0; msg_buf_len];
-        let _ = buf.read(&mut msg).unwrap();
+        let _ = try!(buf.read(&mut msg));
         if (size as usize + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
             loop {
                 let mut read_buf = vec![0; RECV_BUF_SIZE];
-                let rsize = stream.read(&mut read_buf).unwrap();
+                let rsize = try!(stream.read(&mut read_buf));
                 msg.extend_from_slice(read_buf.as_ref());
                 msg_buf_len += rsize;
                 if msg_buf_len >= size as usize {
