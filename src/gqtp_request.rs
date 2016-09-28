@@ -2,6 +2,7 @@ use std::io;
 use std::io::Cursor;
 use std::io::prelude::*;
 use std::net::TcpStream;
+use std::string::FromUtf8Error;
 use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
 
 const RECV_BUF_SIZE: usize = 8192;
@@ -12,12 +13,19 @@ pub enum GQTPError {
     InvalidProtocol,
     InvalidBodySize,
     StatusError(u16),
-    IO(io::Error)
+    IO(io::Error),
+    EncodingError(FromUtf8Error)
 }
 
 impl From<io::Error> for GQTPError {
     fn from(err: io::Error) -> GQTPError {
         GQTPError::IO(err)
+    }
+}
+
+impl From<FromUtf8Error> for GQTPError {
+    fn from(err: FromUtf8Error) -> GQTPError {
+        GQTPError::EncodingError(err)
     }
 }
 
@@ -117,7 +125,7 @@ impl<'a> GQTPRequest<'a> {
             }
         }
 
-        Ok(String::from_utf8(msg).unwrap())
+        Ok(try!(String::from_utf8(msg)))
     }
 }
 
