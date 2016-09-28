@@ -65,7 +65,7 @@ impl<'a> GQTPRequest<'a> {
         where C: AsRef<str>
     {
         // send
-        let mut stream = TcpStream::connect(self.addr).unwrap();
+        let mut stream = try!(TcpStream::connect(self.addr));
         let mut send_buf = vec![];
         try!(send_buf.write_u8(0xc7));
         try!(send_buf.write_u8(0));
