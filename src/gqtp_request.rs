@@ -103,7 +103,6 @@ impl<'a> GQTPRequest<'a> {
                 let rsize = stream.read(&mut read_buf).unwrap();
                 msg.extend_from_slice(read_buf.as_ref());
                 msg_buf_len += rsize;
-                println!("msglen={}", msg_buf_len);
                 if msg_buf_len >= size as usize {
                     break;
                 }
