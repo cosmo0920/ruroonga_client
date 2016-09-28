@@ -13,6 +13,7 @@ pub enum GQTPError {
     StatusError(u16),
 }
 
+/// Request [GQTP protocol](http://groonga.org/docs/spec/gqtp.html) over TcpStream
 pub struct GQTPRequest<'a> {
     addr: &'a str,
 }
