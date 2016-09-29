@@ -104,25 +104,25 @@ impl<'a> GQTPRequest<'a> {
         if status != 0 && status != 1 {
             return Err(GQTPError::StatusError(status));
         }
-        let size = try!(buf.read_i32::<BigEndian>());
+        let size = try!(buf.read_i32::<BigEndian>()) as usize;
         let _ = try!(buf.read_i32::<BigEndian>());    // opaque
         let _ = try!(buf.read_i64::<BigEndian>());    // cas
 
         // read body
-        let mut msg_buf_len = if (size as usize + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
+        let mut msg_buf_len = if (size + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
             RECV_BUF_SIZE - GQTP_HEADER_SIZE
         } else {
-            size as usize
+            size
         };
         let mut msg = vec![0; msg_buf_len];
         let _ = try!(buf.read(&mut msg));
-        if (size as usize + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
+        if (size + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {
             loop {
                 let mut read_buf = vec![0; RECV_BUF_SIZE];
                 let rsize = try!(stream.read(&mut read_buf));
                 msg.extend_from_slice(read_buf.as_ref());
                 msg_buf_len += rsize;
-                if msg_buf_len >= size as usize {
+                if msg_buf_len >= size {
                     break;
                 }
             }
