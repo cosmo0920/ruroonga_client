@@ -1,6 +1,7 @@
 use std::io;
 use std::io::Cursor;
 use std::io::prelude::*;
+use std::borrow::Cow;
 use std::net::TcpStream;
 use std::string::FromUtf8Error;
 use byteorder::{BigEndian, WriteBytesExt, ReadBytesExt};
@@ -31,12 +32,12 @@ impl From<FromUtf8Error> for GQTPError {
 
 /// Request [GQTP protocol](http://groonga.org/docs/spec/gqtp.html) over TcpStream
 pub struct GQTPRequest<'a> {
-    addr: &'a str,
+    addr: Cow<'a, str>,
 }
 
 impl<'a> Default for GQTPRequest<'a> {
     fn default() -> GQTPRequest<'a> {
-        GQTPRequest { addr: "127.0.0.1:10043" }
+        GQTPRequest { addr: Cow::Borrowed("127.0.0.1:10043") }
     }
 }
 
@@ -55,8 +56,10 @@ impl<'a> GQTPRequest<'a> {
     ///
     /// groonga::GQTPRequest::new().with_addr("127.0.0.1:20043");
     /// ```
-    pub fn with_addr(mut self, addr: &'a str) -> GQTPRequest<'a> {
-        self.addr = addr;
+    pub fn with_addr<T>(mut self, addr: T) -> GQTPRequest<'a>
+        where T: Into<Cow<'a, str>>
+    {
+        self.addr = addr.into();
         self
     }
 
@@ -65,7 +68,7 @@ impl<'a> GQTPRequest<'a> {
         where C: AsRef<str>
     {
         // send
-        let mut stream = try!(TcpStream::connect(self.addr));
+        let mut stream = try!(TcpStream::connect(self.addr.as_ref()));
         let mut send_buf = vec![];
         try!(send_buf.write_u8(0xc7));
         try!(send_buf.write_u8(0));
@@ -142,6 +145,12 @@ mod tests {
     #[test]
     fn smoke_gqtp_with_addr() {
         let req = GQTPRequest::new().with_addr("127.0.0.1:20043");
+        assert_eq!("127.0.0.1:20043", req.addr)
+    }
+
+    #[test]
+    fn smoke_gqtp_with_addr_string() {
+        let req = GQTPRequest::new().with_addr("127.0.0.1:20043".to_string());
         assert_eq!("127.0.0.1:20043", req.addr)
     }
 }
