@@ -7,7 +7,9 @@ Ruroonga Client
 
 [Documentation](http://cosmo0920.github.io/ruroonga_client/ruroonga_client/index.html)
 
-A tiny Groonga client via HTTP written by Rust language.
+A tiny Groonga client mainly via HTTP written by Rust language.
+
+GQTP protocol support is experimental for now.
 
 ## Usage
 
