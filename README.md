@@ -28,6 +28,16 @@ extern crate ruroonga_client;
 use ruroonga_client as groonga;
 ```
 
+### Using GQTP protocol
+
+If you want to use GQTP module, please specify the dependency as follows for now:
+
+```toml
+[dependencies.ruroonga_client]
+version = "~0.5.0"
+features = ["gqtp"]
+```
+
 ## Example
 
 ```rust
