@@ -8,7 +8,7 @@ environment:
   matrix:
     - TARGET: x86_64-pc-windows-msvc
       BITS: 64
-      RUSTVER: 1.13.0
+      RUSTVER: 1.15.1
       OPENSSLVER: 1_0_2j
 install:
   - ps: Start-FileDownload "http://slproweb.com/download/Win${env:BITS}OpenSSL-${env:OPENSSLVER}.exe"
