@@ -1,9 +1,5 @@
 language: rust
 sudo: false
-addons:
-  apt:
-    packages:
-    - libssl-dev
 matrix:
   include:
     - rust: nightly
