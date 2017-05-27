@@ -170,7 +170,7 @@ mod tests {
         let expected = concat!(r#"Array([Integer(1), "#,
                                r#"String("http://example.org/"), "#,
                                r#"String("This is test record 1!")])"#)
-            .to_owned();
+                .to_owned();
         assert_eq!(expected, format!("{:?}", vec[2]))
     }
 
@@ -181,7 +181,7 @@ mod tests {
         let expected = concat!(r#"Array([Integer(1), "#,
                                r#"String("http://example.org/"), "#,
                                r#"String("This is test record 1!")])"#)
-            .to_owned();
+                .to_owned();
         assert_eq!(expected, format!("{:?}", vec[2]))
     }
 }

@@ -15,7 +15,7 @@ pub enum GQTPError {
     InvalidBodySize,
     StatusError(u16),
     IO(io::Error),
-    EncodingError(FromUtf8Error)
+    EncodingError(FromUtf8Error),
 }
 
 impl From<io::Error> for GQTPError {
@@ -74,7 +74,7 @@ impl<'a> GQTPRequest<'a> {
         try!(send_buf.write_u8(0));
         try!(send_buf.write_i16::<BigEndian>(0));
         try!(send_buf.write_u8(0));
-        try!(send_buf.write_u8(0x02));   // flags
+        try!(send_buf.write_u8(0x02)); // flags
         try!(send_buf.write_u16::<BigEndian>(0));
         try!(send_buf.write_u32::<BigEndian>(command.as_ref().len() as u32));
         try!(send_buf.write_u32::<BigEndian>(0));
@@ -105,8 +105,8 @@ impl<'a> GQTPRequest<'a> {
             return Err(GQTPError::StatusError(status));
         }
         let size = try!(buf.read_i32::<BigEndian>()) as usize;
-        let _ = try!(buf.read_i32::<BigEndian>());    // opaque
-        let _ = try!(buf.read_i64::<BigEndian>());    // cas
+        let _ = try!(buf.read_i32::<BigEndian>()); // opaque
+        let _ = try!(buf.read_i64::<BigEndian>()); // cas
 
         // read body
         let mut msg_buf_len = if (size + GQTP_HEADER_SIZE) > RECV_BUF_SIZE {

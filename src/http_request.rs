@@ -60,15 +60,12 @@ impl HTTPRequest {
         let mut headers = Headers::new();
         if self.auth {
             headers.set(Authorization(Basic {
-                username: self.user.clone(),
-                password: self.password.clone(),
-            }));
+                                          username: self.user.clone(),
+                                          password: self.password.clone(),
+                                      }));
         }
         headers.set(Connection::close());
-        self.client
-            .get(url.as_ref())
-            .headers(headers)
-            .send()
+        self.client.get(url.as_ref()).headers(headers).send()
     }
 
     /// Creating an loading data request via POST.
@@ -78,9 +75,9 @@ impl HTTPRequest {
         let mut headers = Headers::new();
         if self.auth {
             headers.set(Authorization(Basic {
-                username: self.user.clone(),
-                password: self.password.clone(),
-            }));
+                                          username: self.user.clone(),
+                                          password: self.password.clone(),
+                                      }));
         }
         headers.set(ContentType::json());
         headers.set(ContentLength(body.len() as u64));

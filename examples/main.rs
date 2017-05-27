@@ -9,9 +9,11 @@ fn create_table() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = CommandQuery::new("table_create");
     let uri_base = groonga::URIBase::new()
-        .base_uri(GROONGA_SERVER.to_string()).build();
+        .base_uri(GROONGA_SERVER.to_string())
+        .build();
     command.set_argument(vec![("name", "Sites"),
-                              ("flags","TABLE_HASH_KEY"),("key_type","ShortText")]);
+                              ("flags", "TABLE_HASH_KEY"),
+                              ("key_type", "ShortText")]);
     let url = groonga::RequestURI::new(uri_base, command.encode()).url();
     println!("load url: {}", url);
     let res = request.get(url);
@@ -23,9 +25,9 @@ fn create_column() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = CommandQuery::new("column_create");
     let uri_base = groonga::URIBase::new()
-        .base_uri(GROONGA_SERVER.to_string()).build();
-    command.set_argument(vec![("table", "Sites"),
-                              ("name","title"),("type","ShortText")]);
+        .base_uri(GROONGA_SERVER.to_string())
+        .build();
+    command.set_argument(vec![("table", "Sites"), ("name", "title"), ("type", "ShortText")]);
     let url = groonga::RequestURI::new(uri_base, command.encode()).url();
     println!("load url: {}", url);
     let res = request.get(url);
@@ -49,7 +51,8 @@ fn load() {
     let mut request = groonga::HTTPRequest::new();
     let mut load_command = CommandQuery::new("load");
     let uri_base = groonga::URIBase::new()
-        .base_uri(GROONGA_SERVER.to_string()).build();
+        .base_uri(GROONGA_SERVER.to_string())
+        .build();
     load_command.set_argument(vec![("table", "Sites")]);
     let load_url = groonga::RequestURI::new(uri_base, load_command.encode()).url();
     println!("load url: {}", load_url);
@@ -63,7 +66,7 @@ fn load() {
 struct Result {
     id: i64,
     key: String,
-    title: String
+    title: String,
 }
 
 fn main() {
@@ -73,7 +76,8 @@ fn main() {
     let mut request = groonga::HTTPRequest::new();
     let mut command = CommandQuery::new("select");
     let uri_base = groonga::URIBase::new()
-        .base_uri(GROONGA_SERVER.to_string()).build();
+        .base_uri(GROONGA_SERVER.to_string())
+        .build();
     command.set_argument(vec![("table", "Sites")]);
     let url = groonga::RequestURI::new(uri_base, command.encode()).url();
     println!("url: {}", url);
@@ -95,9 +99,11 @@ fn main() {
         for v in decoded_vec.iter().skip(2) {
             println!("{:?}", v);
             let raw = v.unwrap_vec();
-            let elem = Result { id: raw[0].unwrap_i64().clone(),
-                                key: raw[1].unwrap_string().clone(),
-                                title: raw[2].unwrap_string().clone() };
+            let elem = Result {
+                id: raw[0].unwrap_i64().clone(),
+                key: raw[1].unwrap_string().clone(),
+                title: raw[2].unwrap_string().clone(),
+            };
             result_vec.push(elem.clone());
         }
         println!("-- Mapped to user-defined struct -- ");

@@ -61,17 +61,13 @@ mod tests {
 
     #[test]
     fn build_only_uri_base() {
-        let uri_base = URIBase::new()
-            .base_uri("127.0.0.1")
-            .build();
+        let uri_base = URIBase::new().base_uri("127.0.0.1").build();
         assert_eq!("http://127.0.0.1:10041", uri_base);
     }
 
     #[test]
     fn build_only_uri_base_with_owned_str() {
-        let uri_base = URIBase::new()
-            .base_uri("127.0.0.1".to_owned())
-            .build();
+        let uri_base = URIBase::new().base_uri("127.0.0.1".to_owned()).build();
         assert_eq!("http://127.0.0.1:10041", uri_base);
     }
 
